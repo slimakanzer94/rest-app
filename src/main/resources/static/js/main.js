@@ -84,8 +84,8 @@ Vue.component('person-form', {
                     if(this.id) {
                         personApi.update({id: this.id}, person);
                     } else {
-                        personApi.save({}, person).then(result = >
-                        result.json().then(data = > {
+                        personApi.save({}, person).then(result =>
+                        result.json().then(data => {
                             this.persons.push(data);
                         this.name = '';
                         this.lastName = '';
