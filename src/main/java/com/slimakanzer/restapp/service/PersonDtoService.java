@@ -25,8 +25,21 @@ public class PersonDtoService {
     private ModelMapper mapper;
 
     public PersonDto savePerson(PersonDto personDto) throws ParseException {
-        Person person = personRepo.save(convertPersonDtoToPerson(personDto));
-        return convertPersonToPersonDto(person);
+        Person person = convertPersonDtoToPerson(personDto);
+        if (personDto.getId() != null) {
+            Person personFromDb = personRepo.findById(personDto.getId()).get();
+            extractPerson(person, personFromDb);
+            personRepo.save(personFromDb);
+            return convertPersonToPersonDto(personFromDb);
+        } else {
+            return convertPersonToPersonDto(personRepo.save(person));
+        }
+    }
+
+    private void extractPerson(Person person, Person personFromDb) {
+        personFromDb.setbDate(person.getbDate());
+        personFromDb.setName(person.getName());
+        personFromDb.setLastName(person.getLastName());
     }
 
     public PersonDto getPerson(Long id) {
@@ -46,10 +59,11 @@ public class PersonDtoService {
 
     private Person convertPersonDtoToPerson(PersonDto personDto) throws ParseException {
         Person person = mapper.map(personDto, Person.class);
-        if (personDto.getBirthDate() != null) {
+        if (!personDto.getBirthDate().isEmpty()) {
             person.setbDate(convertToDate(personDto.getBirthDate()));
         }
         return person;
+
     }
 
     private PersonDto convertPersonToPersonDto(Person person) {

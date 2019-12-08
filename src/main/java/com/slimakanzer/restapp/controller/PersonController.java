@@ -41,6 +41,7 @@ public class PersonController {
     }
 
     @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void deletePerson(@PathVariable("id") Long id) {
         personDtoService.deletePerson(id);
     }
