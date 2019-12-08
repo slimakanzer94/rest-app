@@ -1,14 +1,11 @@
 package com.slimakanzer.restapp.controller;
 
 import com.slimakanzer.restapp.dto.PersonDto;
-import com.slimakanzer.restapp.entities.Person;
-import com.slimakanzer.restapp.repository.PersonRepo;
 import com.slimakanzer.restapp.service.PersonDtoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.text.ParseException;
 import java.util.List;
 
@@ -21,7 +18,7 @@ public class PersonController {
 
     @GetMapping
     public List<PersonDto> getPerson() {
-       return personDtoService.getPerson();
+        return personDtoService.getPerson();
     }
 
     @GetMapping("{id}")
