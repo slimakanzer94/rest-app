@@ -101,12 +101,6 @@ Vue.component('person-list', {
         '<person-form :persons="persons" :personAttr="person"/>' +
         '<person-row v-for="person in persons" :key="person.id" :person="person" :editMethod="editMethod" :persons="persons">{{person.name}}</person-row>' +
         '</div>',
-    created: function () {
-        personApi.get().then(result =>
-        result.json().then(data =>
-        data.forEach(person => this.persons.push(person)))
-    )
-    },
     methods: {
         editMethod: function (person) {
             this.person = person
@@ -116,10 +110,24 @@ Vue.component('person-list', {
 
 var app = new Vue({
     el: '#app',
-    template: '<person-list :persons="persons"/>',
+    template:
+              '<div>' +
+                  '<div v-if="!profile">Необходимо авторизоваться через <a href="/login">google</a> </div>' +
+                  '<div  v-else>' +
+                      '<div>{{profile.name}}&nbsp  <a href="/logout">Выйти</a> </div>' +
+                      '<person-list :persons="persons"/> ' +
+                    '</div>' +
+              '</div>',
     data: {
-        persons: []
-    }
+        persons: frontendData.persons,
+        profile: frontendData.profile
+    },
+    created: function () {
+        personApi.get().then(result =>
+        result.json().then(data =>
+        data.forEach(person => this.persons.push(person)))
+    )
+    },
 });
 
 function getIndex(list, id) {
